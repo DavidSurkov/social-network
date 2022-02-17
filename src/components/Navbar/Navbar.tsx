@@ -1,9 +1,10 @@
 import React from 'react';
-import '../App.css';
+import '../../App.css';
+import { NavbarStlye } from './NavbarStlye';
 
-const Navbar = () => {
+export function Navbar() {
   return (
-    <nav className="nav">
+    <NavbarStlye>
       <div>
         <a href="">Profile</a>
       </div>
@@ -19,8 +20,6 @@ const Navbar = () => {
       <div>
         <a href="">Settings</a>
       </div>
-    </nav>
+    </NavbarStlye>
   );
-};
-
-export default Navbar;
+}
