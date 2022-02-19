@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const AppWrapper = styled.div`
+export const AppStyle = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   display: grid;
@@ -10,4 +10,9 @@ export const AppWrapper = styled.div`
   grid-template-rows: 60px 1fr;
   grid-auto-columns: 2fr 10fr;
   font-family: 'Helvetica Neue';
+`;
+
+export const Wrapper = styled.div`
+  grid-area: c;
+  background-color: green;
 `;

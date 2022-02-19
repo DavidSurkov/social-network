@@ -1,14 +1,26 @@
 import React from 'react';
 import { PostStyle } from './PostStyle';
+import { Like, Avatar } from './PostStyle';
 
-export const Post = () => {
+interface IPost {
+  message: string;
+  likes: number;
+}
+export const Post = (props: IPost) => {
   return (
     <PostStyle>
-      <img
+      <Avatar
         src={'https://shapka-youtube.ru/wp-content/uploads/2021/02/prikolnaya-avatarka-dlya-patsanov.jpg'}
         alt={'Avatar'}
       />
-      <span>Post</span>
+      <span>{props.message}</span>
+      <Like>
+        <span>{props.likes}</span>
+        <img
+          src="https://static.vecteezy.com/system/resources/thumbnails/000/420/238/small/Multimedia__28407_29.jpg"
+          alt="like"
+        />
+      </Like>
     </PostStyle>
   );
 };

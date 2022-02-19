@@ -8,11 +8,9 @@ import { ProfileDescription } from './ProfileDescription/ProfileDescription';
 export function Profile() {
   return (
     <>
-      <ProfileStyle>
-        <Banner />
-        <ProfileDescription />
-        <MyPosts />
-      </ProfileStyle>
+      <Banner />
+      <ProfileDescription />
+      <MyPosts />
     </>
   );
 }

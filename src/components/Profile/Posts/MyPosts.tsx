@@ -11,9 +11,9 @@ export const MyPosts = () => {
         <input />
         <button>Add New Post</button>
       </MyPostsStyle>
-      <Post />
-      <Post />
-      <Post />
+      <Post message={'Good afternoon'} likes={7} />
+      <Post message={'I would like to say something'} likes={5} />
+      <Post message={'But I will not'} likes={1} />
     </>
   );
 };
