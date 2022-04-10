@@ -1,14 +1,15 @@
 import React from 'react';
-import { BannerStyle } from './BannerStyle';
-export const Banner = () => {
-  return (
-    <BannerStyle>
-      <img
-        src="https://logomaker-assets.s3.amazonaws.com/sites/all/themes/logomaker/images/fls_products/lp_redesign/LogoMaker-Hero_B_1110x427.jpg"
-        alt="Banner"
-      />
-    </BannerStyle>
-  );
-};
+import bannerLogo from '../../../images/bannerLogo.jpg';
+import styled from 'styled-components';
 
-export default Banner;
+//Styles
+export const BannerStyle = styled.div`
+  height: 200px;
+  background-image: url('https://i0.wp.com/urok-ua.com/wp-content/uploads/2017/07/Avatarka-10.jpg');
+  background-position: 0 0;
+  background-attachment: fixed;
+`;
+
+export const Banner = () => {
+  return <BannerStyle />;
+};

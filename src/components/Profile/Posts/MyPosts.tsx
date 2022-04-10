@@ -1,21 +1,55 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import { Post } from './Post/Post';
-import { MyPostsStyle } from './MyPostsStyle';
+import styled from 'styled-components';
+import { IProfile } from '../../../redux/profile_reducer';
 
-export const MyPosts = () => {
+//Styles
+export const MyPostsStyle = styled.div`
+  margin: 50px 0;
+
+  textarea {
+    font-size: 20px;
+    display: block;
+    min-width: 600px;
+    min-height: 100px;
+  }
+
+  button {
+    height: 30px;
+    width: 150px;
+    color: wheat;
+    background: darkolivegreen;
+  }
+`;
+
+interface IPost {
+  profileData: IProfile;
+  changeNewText: (text: string) => void;
+  addPost: () => void;
+}
+export const MyPosts = (props: IPost) => {
+  const postsElements = props.profileData.posts.map((p) => (
+    <Post key={p.id} id={p.id} message={p.text} likes={p.likeCounter} />
+  ));
+
+  const newPostElementHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    props.changeNewText(e.currentTarget.value);
+    //const newText = e.currentTarget.value;
+    //props.dispatch({ type: 'CHANGE-NEW-TEXT', newText: e.currentTarget.value });
+    //props.dispatch(changeNewTextAC(e.currentTarget.value));
+  };
+  const addPostCallback = () => {
+    props.addPost();
+  };
   return (
     <>
       <MyPostsStyle>
-        my postsS
+        <h2>My posts</h2>
         <div>New post</div>
-        <input />
-        <button>Add New Post</button>
+        <textarea value={props.profileData.textForNewPost} onChange={newPostElementHandler} />
+        <button onClick={addPostCallback}>Add New Post</button>
       </MyPostsStyle>
-      <Post message={'Good afternoon'} likes={7} />
-      <Post message={'I would like to say something'} likes={5} />
-      <Post message={'But I will not'} likes={1} />
+      {postsElements}
     </>
   );
 };
-
-export default MyPosts;
