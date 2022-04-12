@@ -14,7 +14,7 @@ export interface User {
 
 const initialState = {
   users: [
-    {
+    /* {
       id: 1,
       image: dialogAvatar1,
       followed: false,
@@ -37,7 +37,7 @@ const initialState = {
       fullName: { name: 'Francesco', surname: 'Vitae' },
       status: 'Hate to stay here',
       location: { country: 'Italy', city: 'Catania' },
-    },
+    },*/
   ] as Array<User>,
 };
 export type UsersType = typeof initialState;
@@ -66,6 +66,7 @@ export const usersReducer = (state: UsersType = initialState, action: UsersActio
         }),
       };
     case 'SET-USERS': {
+      debugger;
       return {
         ...state,
         users: [...state.users, ...action.users],
