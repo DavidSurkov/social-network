@@ -1,18 +1,42 @@
 import React from 'react';
-import { PostStyle } from './PostStyle';
-import { Like, Avatar } from './PostStyle';
+import styled from 'styled-components';
+
+//Styles
+export const PostStyle = styled.div`
+  margin: 10px 0;
+  border: 1px solid wheat;
+  font-size: 20px;
+  font-style: italic;
+`;
+export const Like = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  color: wheat;
+  img {
+    max-width: 20px;
+    min-height: 20px;
+    border-radius: 50%;
+  }
+`;
+export const Avatar = styled.span`
+  img {
+    max-width: 70px;
+    min-height: 40px;
+    border-radius: 50%;
+  }
+`;
 
 interface IPost {
+  id: number;
   message: string;
   likes: number;
 }
 export const Post = (props: IPost) => {
   return (
     <PostStyle>
-      <Avatar
-        src={'https://shapka-youtube.ru/wp-content/uploads/2021/02/prikolnaya-avatarka-dlya-patsanov.jpg'}
-        alt={'Avatar'}
-      />
+      <Avatar>
+        <img src={'https://i.pinimg.com/originals/32/3b/c2/323bc2e28f35a760b8d7afe48f3ffe48.png'} alt={'Avatar'} />
+      </Avatar>
       <span>{props.message}</span>
       <Like>
         <span>{props.likes}</span>

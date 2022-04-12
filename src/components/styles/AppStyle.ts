@@ -15,4 +15,5 @@ export const AppStyle = styled.div`
 export const Wrapper = styled.div`
   grid-area: c;
   background-color: green;
+  padding: 10px;
 `;
