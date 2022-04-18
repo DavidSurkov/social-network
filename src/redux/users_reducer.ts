@@ -3,13 +3,23 @@ import dialogAvatar1 from '../images/dialogAvatar1.jpg';
 import dialogAvatar2 from '../images/dialogAvatar2.jpg';
 import dialogAvatar3 from '../images/dialogAvatar3.jpg';
 import dialogAvatar4 from '../images/dialogAvatar4.png';
+import exp from 'constants';
 export interface User {
-  id: number;
+  /* id: number;
   image: string;
   followed: boolean;
   fullName: { name: string; surname: string };
   status: string;
-  location: { country: string; city: string };
+  location: { country: string; city: string };*/
+  name: string;
+  id: number;
+  uniqueUrlName: null;
+  photos: {
+    small: null;
+    large: null;
+  };
+  status: null;
+  followed: boolean;
 }
 
 const initialState = {
@@ -39,6 +49,9 @@ const initialState = {
       location: { country: 'Italy', city: 'Catania' },
     },*/
   ] as Array<User>,
+  pageSize: 5,
+  totalUsersCount: 20,
+  currentPage: 1,
 };
 export type UsersType = typeof initialState;
 
@@ -66,10 +79,21 @@ export const usersReducer = (state: UsersType = initialState, action: UsersActio
         }),
       };
     case 'SET-USERS': {
-      debugger;
       return {
         ...state,
-        users: [...state.users, ...action.users],
+        users: [...action.users],
+      };
+    }
+    case 'SET-CURRENT-PAGE': {
+      return {
+        ...state,
+        currentPage: action.currentPage,
+      };
+    }
+    case 'SET-TOTAL-USERS-COUNT': {
+      return {
+        ...state,
+        totalUsersCount: action.totalUsersCount,
       };
     }
     default:
@@ -79,7 +103,12 @@ export const usersReducer = (state: UsersType = initialState, action: UsersActio
 export const followAC = (userID: number) => ({ type: 'FOLLOW', userID } as const);
 export const unfollowAC = (userID: number) => ({ type: 'UNFOLLOW', userID } as const);
 export const setUsersAC = (users: Array<User>) => ({ type: 'SET-USERS', users } as const);
+export const setCurrentPageAC = (currentPage: number) => ({ type: 'SET-CURRENT-PAGE', currentPage } as const);
+export const setTotalUsersCountAC = (totalUsersCount: number) =>
+  ({ type: 'SET-TOTAL-USERS-COUNT', totalUsersCount } as const);
 export type UsersActionType =
   | ReturnType<typeof followAC>
   | ReturnType<typeof unfollowAC>
+  | ReturnType<typeof setCurrentPageAC>
+  | ReturnType<typeof setTotalUsersCountAC>
   | ReturnType<typeof setUsersAC>;
