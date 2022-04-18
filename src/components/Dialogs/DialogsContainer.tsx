@@ -13,7 +13,6 @@ interface IMapDispatchToProps {
 }
 
 const mapStateToProps = (state: AppRootStateType): IMapStateToProps => {
-  debugger;
   return {
     dialogsData: state.dialogsData,
   };

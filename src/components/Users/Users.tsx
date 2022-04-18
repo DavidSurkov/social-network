@@ -1,13 +1,16 @@
 import React from 'react';
 import { User } from '../../redux/users_reducer';
 import styled from 'styled-components';
-import axios from 'axios';
+import image from '../../images/Avatarka-10.webp';
 
 interface IUser {
   users: Array<User>;
+  totalUsersCount: number;
+  pageSize: number;
   follow: (userID: number) => void;
   unfollow: (userID: number) => void;
-  setUsers: (users: User[]) => void;
+  currentPage: number;
+  onPageChanged: (p: number) => void;
 }
 //Styles
 const UsersStyle = styled.div``;
@@ -48,23 +51,38 @@ const LocationStyle = styled.div`
 const StatusStyle = styled.div`
   grid-area: c;
 `;
+const PageStyle = styled.span<{ isSelected: boolean }>`
+  padding: 5px;
+  text-align: center;
+  font-size: 20px;
+  cursor: pointer;
+  font-weight: ${(props) => (props.isSelected ? 'bold' : '')};
+`;
 
 export const Users = (props: IUser) => {
-  const getUsers = () => {
-    debugger;
-    if (props.users.length === 0) {
-      axios.get('https://social-network.samuraijs.com/api/1.0/users').then((response) => {
-        props.setUsers(response.data.users);
-      });
-    }
-  };
+  const pagesCount = Math.ceil(props.totalUsersCount / props.pageSize);
+  const pages: number[] = [];
+  for (let i = 1; i <= pagesCount; i++) {
+    pages.push(i);
+  }
   return (
     <UsersStyle>
-      <button onClick={getUsers}>Get users</button>
+      {pages.map((p) => {
+        return (
+          <PageStyle
+            onClick={() => {
+              props.onPageChanged(p);
+            }}
+            isSelected={props.currentPage === p}
+          >
+            {p}
+          </PageStyle>
+        );
+      })}
       {props.users.map((user) => (
         <UserBlockStyle key={user.id}>
           <PhotoBlockStyle>
-            <img src={user.image} alt={user.fullName.name} />
+            <img src={user.photos.small != null ? user.photos.small : image} alt={user.name} />
             {user.followed ? (
               <button
                 onClick={() => {
@@ -85,8 +103,8 @@ export const Users = (props: IUser) => {
           </PhotoBlockStyle>
           <InfoBlockStyle>
             <FullNameStyle>
-              <div>Name: {user.fullName.name}</div>
-              <div>Last name: {user.fullName.surname}</div>
+              <div>Name: {user.name}</div>
+              <div>Last name: {user.name}</div>
             </FullNameStyle>
             <StatusStyle>
               Status:
@@ -94,8 +112,8 @@ export const Users = (props: IUser) => {
               {user.status}
             </StatusStyle>
             <LocationStyle>
-              <div>Country: {user.location.country}</div>
-              <div>City: {user.location.city}</div>
+              <div>Country: {'user.location.country'}</div>
+              <div>City: {'user.location.city'}</div>
             </LocationStyle>
           </InfoBlockStyle>
         </UserBlockStyle>
