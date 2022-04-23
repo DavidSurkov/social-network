@@ -2,6 +2,8 @@ import React from 'react';
 import { User } from '../../redux/users_reducer';
 import styled from 'styled-components';
 import image from '../../images/Avatarka-10.webp';
+import { NavLink } from 'react-router-dom';
+import { usersAPI } from '../../api/api';
 
 interface IUser {
   users: Array<User>;
@@ -11,9 +13,16 @@ interface IUser {
   unfollow: (userID: number) => void;
   currentPage: number;
   onPageChanged: (p: number) => void;
+  followingProgress: number[];
+  toggleFollowingProgress: (isFetching: boolean, userId: number) => void;
 }
 //Styles
 const UsersStyle = styled.div``;
+const PaginationContainer = styled.div`
+  width: 900px;
+  height: max-content;
+  overflow: scroll;
+`;
 const UserBlockStyle = styled.div`
   display: flex;
   border: 1px solid black;
@@ -67,34 +76,53 @@ export const Users = (props: IUser) => {
   }
   return (
     <UsersStyle>
-      {pages.map((p) => {
-        return (
-          <PageStyle
-            onClick={() => {
-              props.onPageChanged(p);
-            }}
-            isSelected={props.currentPage === p}
-          >
-            {p}
-          </PageStyle>
-        );
-      })}
+      <PaginationContainer>
+        {pages.map((p) => {
+          return (
+            <PageStyle
+              key={Math.random()}
+              onClick={() => {
+                props.onPageChanged(p);
+              }}
+              isSelected={props.currentPage === p}
+            >
+              {p}
+            </PageStyle>
+          );
+        })}
+      </PaginationContainer>
       {props.users.map((user) => (
         <UserBlockStyle key={user.id}>
           <PhotoBlockStyle>
-            <img src={user.photos.small != null ? user.photos.small : image} alt={user.name} />
+            <NavLink to={'/profile/' + user.id}>
+              <img src={user.photos.small != null ? user.photos.small : image} alt={user.name} />
+            </NavLink>
             {user.followed ? (
               <button
+                disabled={props.followingProgress.some((id: number) => id === user.id)}
                 onClick={() => {
-                  props.unfollow(user.id);
+                  props.toggleFollowingProgress(true, user.id);
+                  usersAPI.unfollowUser(user.id).then((data) => {
+                    if (data.resultCode === 0) {
+                      props.unfollow(user.id);
+                    }
+                    props.toggleFollowingProgress(false, user.id);
+                  });
                 }}
               >
                 Unfollow
               </button>
             ) : (
               <button
+                disabled={props.followingProgress.some((id: number) => id === user.id)}
                 onClick={() => {
-                  props.follow(user.id);
+                  props.toggleFollowingProgress(true, user.id);
+                  usersAPI.followUser(user.id).then((data) => {
+                    if (data.resultCode === 0) {
+                      props.follow(user.id);
+                    }
+                    props.toggleFollowingProgress(false, user.id);
+                  });
                 }}
               >
                 Follow

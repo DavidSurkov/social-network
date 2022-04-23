@@ -27,13 +27,5 @@ const mapDispatchToProps = (dispatch: Dispatch): IMapDispatchToProps => {
     },
   };
 };
-/*const newPostElementHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    //const newText = e.currentTarget.value;
-    //props.dispatch({ type: 'CHANGE-NEW-TEXT', newText: e.currentTarget.value });
-    props.dispatch(changeNewTextAC(e.currentTarget.value));
-};*/
-/*const addPostCallback = () => {
-    props.dispatch(addPostAC());
-};*/
 
 export const MyPostsContainer = connect(mapStateToProps, mapDispatchToProps)(MyPosts);

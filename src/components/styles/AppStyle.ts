@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const AppStyle = styled.div`
+  color: white;
   max-width: 1200px;
   margin: 0 auto;
   display: grid;
@@ -14,6 +15,6 @@ export const AppStyle = styled.div`
 
 export const Wrapper = styled.div`
   grid-area: c;
-  background-color: green;
+  background-color: #191f26;
   padding: 10px;
 `;
