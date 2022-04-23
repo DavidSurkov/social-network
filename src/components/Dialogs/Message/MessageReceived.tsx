@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const MessageStyle = styled.div`
+  color: black;
   display: flex;
   position: relative;
   justify-content: center;

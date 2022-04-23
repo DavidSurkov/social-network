@@ -1,7 +1,6 @@
 import React from 'react';
 import './App.css';
 import { Header } from './components/Header/Header';
-import { Profile } from './components/Profile/Profile';
 import { AppStyle, Wrapper } from './components/styles/AppStyle';
 import { Route, Routes } from 'react-router-dom';
 import { Feed } from './components/Feed/Feed';
@@ -10,18 +9,18 @@ import { Settings } from './components/Settings/Settings';
 import { DialogsContainer } from './components/Dialogs/DialogsContainer';
 import { SidebarContainer } from './components/Navbar/SidebarContainer';
 import { UsersContainer } from './components/Users/UsersContainer';
+import ProfileContainer from './components/Profile/ProfileContainer';
+import HeaderContainer from './components/Header/HeaderContainer';
 
 function App() {
-  //const sidebar = useSelector<AppRootStateType, ISidebar>((store) => store.sidebar);
-
   return (
     <AppStyle>
-      <Header />
+      <HeaderContainer />
       <SidebarContainer />
       <Wrapper>
         <Routes>
           <Route path="/dialogs/*" element={<DialogsContainer />} />
-          <Route path="/profile/*" element={<Profile />} />
+          <Route path="/profile/:userId" element={<ProfileContainer />} />
           <Route path="/feed/*" element={<Feed />} />
           <Route path="/music/*" element={<Music />} />
           <Route path="/settings/*" element={<Settings />} />
