@@ -1,3 +1,6 @@
+import { Dispatch } from 'redux';
+import { profileAPI } from '../api/api';
+
 const initialState: IProfile = {
   textForNewPost: '',
   posts: [
@@ -62,3 +65,11 @@ export type ProfileActionType =
   | ReturnType<typeof addPostAC>
   | ReturnType<typeof changeNewTextAC>
   | ReturnType<typeof setUserProfile>;
+
+export const setUserProfileTC = (userId: number | string | undefined) => {
+  return (dispatch: Dispatch) => {
+    profileAPI.getProfileData(userId).then((data) => {
+      dispatch(setUserProfile(data));
+    });
+  };
+};

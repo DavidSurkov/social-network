@@ -3,7 +3,6 @@ import { User } from '../../redux/users_reducer';
 import styled from 'styled-components';
 import image from '../../images/Avatarka-10.webp';
 import { NavLink } from 'react-router-dom';
-import { usersAPI } from '../../api/api';
 
 interface IUser {
   users: Array<User>;
@@ -15,6 +14,8 @@ interface IUser {
   onPageChanged: (p: number) => void;
   followingProgress: number[];
   toggleFollowingProgress: (isFetching: boolean, userId: number) => void;
+  unfollowUserTC: (userId: number) => void;
+  followUserTC: (userId: number) => void;
 }
 //Styles
 const UsersStyle = styled.div``;
@@ -66,6 +67,7 @@ const PageStyle = styled.span<{ isSelected: boolean }>`
   font-size: 20px;
   cursor: pointer;
   font-weight: ${(props) => (props.isSelected ? 'bold' : '')};
+  color: ${(props) => (props.isSelected ? 'yellow' : '')};
 `;
 
 export const Users = (props: IUser) => {
@@ -101,13 +103,7 @@ export const Users = (props: IUser) => {
               <button
                 disabled={props.followingProgress.some((id: number) => id === user.id)}
                 onClick={() => {
-                  props.toggleFollowingProgress(true, user.id);
-                  usersAPI.unfollowUser(user.id).then((data) => {
-                    if (data.resultCode === 0) {
-                      props.unfollow(user.id);
-                    }
-                    props.toggleFollowingProgress(false, user.id);
-                  });
+                  props.unfollowUserTC(user.id);
                 }}
               >
                 Unfollow
@@ -116,13 +112,7 @@ export const Users = (props: IUser) => {
               <button
                 disabled={props.followingProgress.some((id: number) => id === user.id)}
                 onClick={() => {
-                  props.toggleFollowingProgress(true, user.id);
-                  usersAPI.followUser(user.id).then((data) => {
-                    if (data.resultCode === 0) {
-                      props.follow(user.id);
-                    }
-                    props.toggleFollowingProgress(false, user.id);
-                  });
+                  props.followUserTC(user.id);
                 }}
               >
                 Follow

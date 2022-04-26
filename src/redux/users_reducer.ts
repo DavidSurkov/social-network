@@ -1,3 +1,6 @@
+import { usersAPI } from '../api/api';
+import { Dispatch } from 'redux';
+
 export interface User {
   name: string;
   id: number;
@@ -97,3 +100,37 @@ export type UsersActionType =
   | ReturnType<typeof setUsers>
   | ReturnType<typeof toggleIsFetching>
   | ReturnType<typeof toggleFollowingProgress>;
+
+export const getUsersTC = (currentPage: number, pageSize: number) => {
+  return (dispatch: Dispatch) => {
+    dispatch(setCurrentPage(currentPage));
+    dispatch(toggleIsFetching(true));
+    usersAPI.getUsers(currentPage, pageSize).then((data) => {
+      dispatch(toggleIsFetching(false));
+      dispatch(setUsers(data.items));
+      dispatch(setTotalUsersCount(data.totalCount));
+    });
+  };
+};
+export const unfollowUserTC = (userId: number) => {
+  return (dispatch: Dispatch) => {
+    dispatch(toggleFollowingProgress(true, userId));
+    usersAPI.unfollowUser(userId).then((data) => {
+      if (data.resultCode === 0) {
+        dispatch(unfollow(userId));
+      }
+      dispatch(toggleFollowingProgress(false, userId));
+    });
+  };
+};
+export const followUserTC = (userId: number) => {
+  return (dispatch: Dispatch) => {
+    dispatch(toggleFollowingProgress(true, userId));
+    usersAPI.followUser(userId).then((data) => {
+      if (data.resultCode === 0) {
+        dispatch(follow(userId));
+      }
+      dispatch(toggleFollowingProgress(false, userId));
+    });
+  };
+};

@@ -1,3 +1,6 @@
+import { Dispatch } from 'redux';
+import { headerAPI } from '../api/api';
+
 export type AuthoriseStateType = {
   userId: number | null;
   email: string | null;
@@ -31,3 +34,14 @@ export const authoriseReducer = (
 export const setUserData = (userId: number, email: string, login: string) =>
   ({ type: 'SET-USER-DATA', userId, email, login } as const);
 type AuthoriseReducerActionType = ReturnType<typeof setUserData>;
+
+export const setLoginDataTC = () => {
+  return (dispatch: Dispatch) => {
+    headerAPI.getLoginData().then((data) => {
+      if (data.resultCode === 0) {
+        const { id, email, login } = data.data;
+        dispatch(setUserData(id, email, login));
+      }
+    });
+  };
+};
