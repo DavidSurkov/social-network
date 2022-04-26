@@ -32,3 +32,10 @@ export const profileAPI = {
     });
   },
 };
+export const headerAPI = {
+  getLoginData() {
+    return axiosInstance.get(`auth/me`).then((response) => {
+      return response.data;
+    });
+  },
+};
