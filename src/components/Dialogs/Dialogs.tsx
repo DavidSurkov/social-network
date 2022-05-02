@@ -4,7 +4,6 @@ import { Dialog } from './Dialog/Dialog';
 import { MessageReceived } from './Message/MessageReceived';
 import { MessageSent } from './Message/MessageSent';
 import { IDialogs } from '../../redux/dialogs_reducer';
-
 //Styles
 const AllDialogs = styled.div`
   display: grid;

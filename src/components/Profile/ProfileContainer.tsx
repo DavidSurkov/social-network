@@ -1,24 +1,36 @@
 import React, { useEffect } from 'react';
 import { Profile } from './Profile';
 import { connect } from 'react-redux';
-import { IPosts, IProfile, IUserProfile, setUserProfileTC } from '../../redux/profile_reducer';
+import {
+  IPosts,
+  IProfile,
+  IUserProfile,
+  getUserProfileTC,
+  setProfileStatusTC,
+  updateProfileStatusTC,
+} from '../../redux/profile_reducer';
 import { AppRootStateType } from '../../redux/redux-store';
 import { useParams } from 'react-router-dom';
+import { withAuthRedirect } from '../../hoc/withAuthRedirect';
 
 type PropsType = MapStateToProps & MapDispatchToProps;
 type MapStateToProps = {
   textForNewPost: string;
   posts: Array<IPosts>;
   profile: IUserProfile;
+  status: string;
 };
 type MapDispatchToProps = {
-  setUserProfileTC: (userId: number | string | undefined) => void;
+  getUserProfileTC: (userId: number | string | undefined) => void;
+  setProfileStatusTC: (userId: number) => void;
+  updateProfileStatusTC: (status: string) => void;
 };
 
 function ProfileContainer(props: PropsType) {
   const { userId } = useParams<string>();
   useEffect(() => {
-    props.setUserProfileTC(userId);
+    props.getUserProfileTC(userId);
+    props.setProfileStatusTC(Number(userId));
   }, [userId]);
   return <Profile {...props} />;
 }
@@ -28,7 +40,12 @@ const mapStateToProps = (state: AppRootStateType): IProfile => {
     profile: state.profileData.profile,
     textForNewPost: state.profileData.textForNewPost,
     posts: state.profileData.posts,
+    status: state.profileData.status,
   };
 };
 
-export default connect(mapStateToProps, { setUserProfileTC })(ProfileContainer);
+export default withAuthRedirect(
+  connect(mapStateToProps, { getUserProfileTC: getUserProfileTC, setProfileStatusTC, updateProfileStatusTC })(
+    ProfileContainer,
+  ),
+);

@@ -10,6 +10,7 @@ import { SidebarContainer } from './components/Navbar/SidebarContainer';
 import UsersContainer from './components/Users/UsersContainer';
 import ProfileContainer from './components/Profile/ProfileContainer';
 import HeaderContainer from './components/Header/HeaderContainer';
+import { Login } from './components/Login/Login';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path="/music/*" element={<Music />} />
           <Route path="/settings/*" element={<Settings />} />
           <Route path="/users/*" element={<UsersContainer />} />
+          <Route path="/login/*" element={<Login />} />
         </Routes>
       </Wrapper>
     </AppStyle>

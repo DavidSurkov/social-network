@@ -8,18 +8,19 @@ import { Friends } from './Friends';
 export const SidebarStyle = styled.div`
   padding: 10px;
   grid-area: n;
-  background-color: #797900;
+  background-color: #191f26;
+  border: 1px dashed #014d55;
 
   a {
     text-align: center;
-    color: #ffffff;
+    color: #014d55;
     text-decoration: none;
     display: block;
     margin: 10px 0;
     font-size: 18px;
     &.active {
-      color: black;
-      border: 1px solid black;
+      color: #ffffff;
+      border: 1px solid #014d55;
       border-radius: 10px;
     }
   }
@@ -35,7 +36,7 @@ export function Sidebar(props: INavbar) {
   return (
     <SidebarStyle>
       <div>
-        <NavLink to={'/profile'}>Profile</NavLink>
+        <NavLink to={'/profile/23373'}>Profile</NavLink>
       </div>
       <div>
         <NavLink to={'/dialogs'}>Dialogs</NavLink>

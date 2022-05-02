@@ -3,9 +3,11 @@ import { connect } from 'react-redux';
 import { Dialogs } from './Dialogs';
 import { AppRootStateType } from '../../redux/redux-store';
 import { Dispatch } from 'redux';
+import { withAuthRedirect } from '../../hoc/withAuthRedirect';
 
 interface IMapStateToProps {
   dialogsData: IDialogs;
+  isLogged: boolean;
 }
 interface IMapDispatchToProps {
   addMessage: () => void;
@@ -15,6 +17,7 @@ interface IMapDispatchToProps {
 const mapStateToProps = (state: AppRootStateType): IMapStateToProps => {
   return {
     dialogsData: state.dialogsData,
+    isLogged: state.authentication.isLogged,
   };
 };
 const mapDispatchToProps = (dispatch: Dispatch): IMapDispatchToProps => {
@@ -28,4 +31,4 @@ const mapDispatchToProps = (dispatch: Dispatch): IMapDispatchToProps => {
   };
 };
 
-export const DialogsContainer = connect(mapStateToProps, mapDispatchToProps)(Dialogs);
+export const DialogsContainer = withAuthRedirect(connect(mapStateToProps, mapDispatchToProps)(Dialogs));

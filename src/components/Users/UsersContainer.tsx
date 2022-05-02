@@ -9,9 +9,11 @@ import {
   unfollowUserTC,
   User,
 } from '../../redux/users_reducer';
-import React from 'react';
+import React, { ComponentType } from 'react';
 import { Users } from './Users';
 import { Preloader } from '../Common/Preloader';
+import { withAuthRedirect } from '../../hoc/withAuthRedirect';
+import { compose } from 'redux';
 
 type mapStateToPropsType = {
   users: Array<User>;
@@ -74,11 +76,24 @@ const mapStateToProps = (state: AppRootStateType): mapStateToPropsType => {
   };
 };
 
-export default connect(mapStateToProps, {
-  follow,
-  unfollow,
-  toggleFollowingProgress,
-  getUsersTC,
-  unfollowUserTC,
-  followUserTC,
-})(UsersContainer);
+/*export default withAuthRedirect(
+  connect(mapStateToProps, {
+    follow,
+    unfollow,
+    toggleFollowingProgress,
+    getUsersTC,
+    unfollowUserTC,
+    followUserTC,
+  })(UsersContainer),
+);*/
+export default compose<ComponentType>(
+  connect(mapStateToProps, {
+    follow,
+    unfollow,
+    toggleFollowingProgress,
+    getUsersTC,
+    unfollowUserTC,
+    followUserTC,
+  }),
+  withAuthRedirect,
+)(UsersContainer);

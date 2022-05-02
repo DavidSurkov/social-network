@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const axiosInstance = axios.create({
+const instance = axios.create({
   withCredentials: true,
   baseURL: 'https://social-network.samuraijs.com/api/1.0/',
   headers: {
@@ -10,31 +10,37 @@ const axiosInstance = axios.create({
 
 export const usersAPI = {
   getUsers(currentPage: number, pageSize: number) {
-    return axiosInstance.get(`users?page=${currentPage}&count=${pageSize}`).then((response) => {
+    return instance.get(`users?page=${currentPage}&count=${pageSize}`).then((response) => {
       return response.data;
     });
   },
   unfollowUser(userId: number) {
-    return axiosInstance.delete(`follow/${userId}`).then((response) => {
+    return instance.delete(`follow/${userId}`).then((response) => {
       return response.data;
     });
   },
   followUser(userId: number) {
-    return axiosInstance.post(`follow/${userId}`).then((response) => {
+    return instance.post(`follow/${userId}`).then((response) => {
       return response.data;
     });
   },
 };
 export const profileAPI = {
   getProfileData(userId: number | string | undefined) {
-    return axiosInstance.get(`profile/${userId}`).then((response) => {
+    return instance.get(`profile/${userId}`).then((response) => {
       return response.data;
     });
   },
+  getProfileStatus(userId: number) {
+    return instance.get(`profile/status/${userId}`);
+  },
+  updateProfileStatus(status: string) {
+    return instance.put('profile/status', { status });
+  },
 };
-export const headerAPI = {
+export const authAPI = {
   getLoginData() {
-    return axiosInstance.get(`auth/me`).then((response) => {
+    return instance.get(`auth/me`).then((response) => {
       return response.data;
     });
   },
