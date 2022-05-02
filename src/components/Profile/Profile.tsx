@@ -13,12 +13,18 @@ interface IProfile {
   textForNewPost: string;
   posts: Array<IPosts>;
   profile: IUserProfile;
+  status: string;
+  updateProfileStatusTC: (status: string) => void;
 }
 export function Profile(props: IProfile) {
   return (
     <ProfileStyle>
       <Banner />
-      <ProfileDescription profile={props.profile} />
+      <ProfileDescription
+        profile={props.profile}
+        status={props.status}
+        updateProfileStatusTC={props.updateProfileStatusTC}
+      />
       <MyPostsContainer />
     </ProfileStyle>
   );

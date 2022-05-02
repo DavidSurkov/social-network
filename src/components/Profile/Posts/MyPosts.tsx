@@ -13,12 +13,8 @@ export const MyPostsStyle = styled.div`
     min-width: 600px;
     min-height: 100px;
   }
-
   button {
-    height: 30px;
-    width: 150px;
-    color: wheat;
-    background: darkolivegreen;
+    font-size: 20px;
   }
 `;
 

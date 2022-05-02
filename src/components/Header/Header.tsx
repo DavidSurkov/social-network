@@ -13,29 +13,38 @@ interface IHeader {
 
 //Styles
 const HeaderStyle = styled.header`
-  margin: 10px 0;
+  margin: 10px 0 0;
   grid-area: h;
-  background-color: aqua;
+  background-color: #191f26;
+  border: 1px dashed #014d55;
   display: flex;
-  justify-content: center;
-
+  justify-content: space-between;
+  align-items: center;
+`;
+const ImageBlock = styled.div`
   img {
     width: 100px;
   }
 `;
 const LoginBlock = styled.div`
-  float: right;
-  color: black;
+  font-size: 20px;
+  color: #00c4e2;
+
   a {
-    color: black;
+    color: #00c4e2;
+    text-decoration: none;
   }
 `;
 
 export function Header(props: IHeader) {
   return (
     <HeaderStyle>
-      <img src={headerLogo} alt={'LOGO'} />
-      <LoginBlock>{props.isLogged ? props.login : <NavLink to={'/login'}>Login</NavLink>}</LoginBlock>
+      <ImageBlock>
+        <img src={headerLogo} alt={'LOGO'} />
+      </ImageBlock>
+      <LoginBlock>
+        <span>{props.isLogged ? props.login : <NavLink to={'/login'}>Login</NavLink>}</span>
+      </LoginBlock>
     </HeaderStyle>
   );
 }

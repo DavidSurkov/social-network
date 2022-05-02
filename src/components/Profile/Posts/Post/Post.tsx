@@ -4,9 +4,10 @@ import styled from 'styled-components';
 //Styles
 export const PostStyle = styled.div`
   margin: 10px 0;
-  border: 1px solid wheat;
+  border: 1px dashed #014d55;
   font-size: 20px;
   font-style: italic;
+  padding: 5px;
 `;
 export const Like = styled.div`
   display: flex;
