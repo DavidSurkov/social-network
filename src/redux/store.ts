@@ -3,8 +3,8 @@ import dialogAvatar1 from './../images/dialogAvatar1.jpg';
 import dialogAvatar2 from './../images/dialogAvatar2.jpg';
 import dialogAvatar3 from './../images/dialogAvatar3.jpg';
 import dialogAvatar4 from './../images/dialogAvatar4.png';
-import { addPostAC, changeNewTextAC, ProfileActionType, profileReducer } from './profile_reducer';
-import { addMessageAC, changeNewMessageAC, DialogsActionType, dialogsReducer } from './dialogs_reducer';
+import { addPostAC, ProfileActionType, profileReducer } from './profile_reducer';
+import { addMessageAC, DialogsActionType, dialogsReducer } from './dialogs_reducer';
 import { sidebarReducer } from './sidebar_reducer';
 
 interface IPosts {
@@ -63,7 +63,7 @@ interface IStore {
 
 type ActionTypes = ProfileActionType | DialogsActionType;
 
-export const store: IStore = {
+const store: IStore = {
   _state: {
     profileData: {
       textForNewPost: '',

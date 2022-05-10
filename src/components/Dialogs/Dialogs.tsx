@@ -4,6 +4,7 @@ import { Dialog } from './Dialog/Dialog';
 import { MessageReceived } from './Message/MessageReceived';
 import { MessageSent } from './Message/MessageSent';
 import { IDialogs } from '../../redux/dialogs_reducer';
+import { useForm } from 'react-hook-form';
 //Styles
 const AllDialogs = styled.div`
   display: grid;
@@ -26,12 +27,17 @@ const AreaMessageSentStyle = styled.div`
     margin: 0 auto;
   }
 `;
+const ErrorText = styled.div`
+  color: red;
+`;
 
 interface IDialog {
   dialogsData: IDialogs;
-  addMessage: () => void;
-  changeNewMessage: (text: string) => void;
+  addMessage: (message: { message: string }) => void;
 }
+type FormType = {
+  message: string;
+};
 export const Dialogs = (props: IDialog) => {
   const dialogsElements = props.dialogsData.users.map((d) => (
     <Dialog key={d.id} image={d.image} name={d.name} id={d.id} />
@@ -42,20 +48,26 @@ export const Dialogs = (props: IDialog) => {
   const messageReceivedElements = props.dialogsData.messages.messageReceived.map((m) => (
     <MessageReceived key={m.id} message={m.message} id={m.id} />
   ));
-  const addMessageCallback = () => {
-    props.addMessage();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<FormType>();
+  const onSubmit = (data: FormType) => {
+    props.addMessage(data);
+    reset();
   };
-  const newMessageHandler = (element: ChangeEvent<HTMLTextAreaElement>) => {
-    props.changeNewMessage(element.currentTarget.value);
-  };
-
   return (
     <AllDialogs>
       <div>{dialogsElements}</div>
       <MessageBoxStyle>
         <AreaMessageSentStyle>
-          <textarea value={props.dialogsData.messages.textForNewMessage} onChange={newMessageHandler} />
-          <button onClick={addMessageCallback}>Send</button>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <textarea {...register('message', { maxLength: 50 })} />
+            {errors.message && <ErrorText>Max length is 50 symbols</ErrorText>}
+            <button>Send</button>
+          </form>
           {messageSentElements}
         </AreaMessageSentStyle>
         <div>{messageReceivedElements}</div>

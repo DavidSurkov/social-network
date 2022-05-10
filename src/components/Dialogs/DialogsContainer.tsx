@@ -1,4 +1,4 @@
-import { addMessageAC, changeNewMessageAC, IDialogs } from '../../redux/dialogs_reducer';
+import { addMessageAC, IDialogs } from '../../redux/dialogs_reducer';
 import { connect } from 'react-redux';
 import { Dialogs } from './Dialogs';
 import { AppRootStateType } from '../../redux/redux-store';
@@ -10,8 +10,7 @@ interface IMapStateToProps {
   isLogged: boolean;
 }
 interface IMapDispatchToProps {
-  addMessage: () => void;
-  changeNewMessage: (text: string) => void;
+  addMessage: (message: { message: string }) => void;
 }
 
 const mapStateToProps = (state: AppRootStateType): IMapStateToProps => {
@@ -22,11 +21,8 @@ const mapStateToProps = (state: AppRootStateType): IMapStateToProps => {
 };
 const mapDispatchToProps = (dispatch: Dispatch): IMapDispatchToProps => {
   return {
-    changeNewMessage: (text: string) => {
-      dispatch(changeNewMessageAC(text));
-    },
-    addMessage: () => {
-      dispatch(addMessageAC());
+    addMessage: (message) => {
+      dispatch(addMessageAC(message));
     },
   };
 };
