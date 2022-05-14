@@ -15,7 +15,6 @@ import { withAuthRedirect } from '../../hoc/withAuthRedirect';
 
 type PropsType = MapStateToProps & MapDispatchToProps;
 type MapStateToProps = {
-  textForNewPost: string;
   posts: Array<IPosts>;
   profile: IUserProfile;
   status: string;
@@ -38,7 +37,6 @@ function ProfileContainer(props: PropsType) {
 const mapStateToProps = (state: AppRootStateType): IProfile => {
   return {
     profile: state.profileData.profile,
-    textForNewPost: state.profileData.textForNewPost,
     posts: state.profileData.posts,
     status: state.profileData.status,
   };

@@ -1,7 +1,8 @@
-import React, { ChangeEvent } from 'react';
+import React from 'react';
 import { Post } from './Post/Post';
 import styled from 'styled-components';
 import { IProfile } from '../../../redux/profile_reducer';
+import { useForm } from 'react-hook-form';
 
 //Styles
 export const MyPostsStyle = styled.div`
@@ -17,33 +18,41 @@ export const MyPostsStyle = styled.div`
     font-size: 20px;
   }
 `;
+const ErrorText = styled.div`
+  color: red;
+`;
 
 interface IPost {
   profileData: IProfile;
-  changeNewText: (text: string) => void;
-  addPost: () => void;
+  addPost: (data: { post: string }) => void;
 }
+type FormType = {
+  post: string;
+};
 export const MyPosts = (props: IPost) => {
   const postsElements = props.profileData.posts.map((p) => (
     <Post key={p.id} id={p.id} message={p.text} likes={p.likeCounter} />
   ));
-
-  const newPostElementHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    props.changeNewText(e.currentTarget.value);
-    //const newText = e.currentTarget.value;
-    //props.dispatch({ type: 'CHANGE-NEW-TEXT', newText: e.currentTarget.value });
-    //props.dispatch(changeNewTextAC(e.currentTarget.value));
-  };
-  const addPostCallback = () => {
-    props.addPost();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<FormType>();
+  const onSubmit = (data: FormType) => {
+    props.addPost(data);
+    reset();
   };
   return (
     <>
       <MyPostsStyle>
         <h2>My posts</h2>
         <div>New post</div>
-        <textarea value={props.profileData.textForNewPost} onChange={newPostElementHandler} />
-        <button onClick={addPostCallback}>Add New Post</button>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <textarea {...register('post', { maxLength: 50 })} />
+          {errors.post && <ErrorText>Max length is 50 symbols</ErrorText>}
+          <button>Add post</button>
+        </form>
       </MyPostsStyle>
       {postsElements}
     </>

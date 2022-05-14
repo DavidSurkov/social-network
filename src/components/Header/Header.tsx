@@ -2,13 +2,14 @@ import React from 'react';
 import '../../App.css';
 import headerLogo from '../../images/headerLogo.png';
 import styled from 'styled-components';
-import { NavLink } from 'react-router-dom';
+import { Navigate, NavLink } from 'react-router-dom';
 
 interface IHeader {
   userId: number | null;
   email: string | null;
   login: string | null;
   isLogged: boolean;
+  logOutTC: () => void;
 }
 
 //Styles
@@ -37,13 +38,25 @@ const LoginBlock = styled.div`
 `;
 
 export function Header(props: IHeader) {
+  const onClickCallBack = () => {
+    props.logOutTC();
+  };
   return (
     <HeaderStyle>
       <ImageBlock>
         <img src={headerLogo} alt={'LOGO'} />
       </ImageBlock>
       <LoginBlock>
-        <span>{props.isLogged ? props.login : <NavLink to={'/login'}>Login</NavLink>}</span>
+        <div>
+          {props.isLogged ? (
+            <div>
+              <span>{props.login}</span>
+              <button onClick={onClickCallBack}>Log out</button>
+            </div>
+          ) : (
+            <NavLink to={'/login'}>Login</NavLink>
+          )}
+        </div>
       </LoginBlock>
     </HeaderStyle>
   );

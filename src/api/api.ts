@@ -7,6 +7,11 @@ const instance = axios.create({
     'API-KEY': 'd3ccdc4a-e093-4c52-baa5-dff42aec2ee0',
   },
 });
+export type FormData = {
+  email: string;
+  password: string;
+  rememberMe: boolean;
+};
 
 export const usersAPI = {
   getUsers(currentPage: number, pageSize: number) {
@@ -42,6 +47,16 @@ export const authAPI = {
   getLoginData() {
     return instance.get(`auth/me`).then((response) => {
       return response.data;
+    });
+  },
+  logIn(data: FormData) {
+    return instance.post(`auth/login`, data).then((response) => {
+      return response;
+    });
+  },
+  logOut() {
+    return instance.delete(`auth/login`).then((response) => {
+      return response;
     });
   },
 };

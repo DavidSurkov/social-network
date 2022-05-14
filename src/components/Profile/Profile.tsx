@@ -10,7 +10,6 @@ import { IPosts, IUserProfile } from '../../redux/profile_reducer';
 const ProfileStyle = styled.div``;
 
 interface IProfile {
-  textForNewPost: string;
   posts: Array<IPosts>;
   profile: IUserProfile;
   status: string;

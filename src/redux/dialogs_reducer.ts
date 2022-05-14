@@ -18,7 +18,6 @@ export interface IUsers {
   image: string;
 }
 export interface IMessage {
-  textForNewMessage: string;
   messageSent: Array<IMessageSent>;
   messageReceived: Array<IMessageReceived>;
 }
@@ -29,7 +28,6 @@ export interface IDialogs {
 
 const initialState: IDialogs = {
   messages: {
-    textForNewMessage: '',
     messageSent: [
       { id: 1, message: 'Hello, you are a friend of mine' },
       { id: 2, message: 'Good afternoon' },
@@ -53,22 +51,18 @@ const initialState: IDialogs = {
 export const dialogsReducer = (state: IDialogs = initialState, action: DialogsActionType): IDialogs => {
   switch (action.type) {
     case 'ADD-MESSAGE': {
-      const newMessage: IMessageSent = { id: Math.random() * 100, message: state.messages.textForNewMessage };
+      const newMessage: IMessageSent = { id: Math.random() * 100, message: action.message.message };
       return {
         ...state,
         messages: {
           ...state.messages,
-          textForNewMessage: '',
           messageSent: [...state.messages.messageSent, newMessage],
         },
       };
     }
-    case 'CHANGE-NEW-MESSAGE':
-      return { ...state, messages: { ...state.messages, textForNewMessage: action.newMessage } };
     default:
       return state;
   }
 };
-export const addMessageAC = () => ({ type: 'ADD-MESSAGE' } as const);
-export const changeNewMessageAC = (newMessage: string) => ({ type: 'CHANGE-NEW-MESSAGE', newMessage } as const);
-export type DialogsActionType = ReturnType<typeof addMessageAC> | ReturnType<typeof changeNewMessageAC>;
+export const addMessageAC = (message: { message: string }) => ({ type: 'ADD-MESSAGE', message } as const);
+export type DialogsActionType = ReturnType<typeof addMessageAC>;

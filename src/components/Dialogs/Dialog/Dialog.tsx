@@ -3,9 +3,16 @@ import React from 'react';
 import styled from 'styled-components';
 
 const DialogStyle = styled.div`
+  margin: 5px 0;
+  display: flex;
+  align-items: center;
   img {
     height: 40px;
     width: 40px;
+  }
+  a {
+    text-decoration: none;
+    color: white;
   }
 `;
 

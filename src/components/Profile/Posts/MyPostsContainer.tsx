@@ -1,4 +1,4 @@
-import { addPostAC, changeNewTextAC, IProfile } from '../../../redux/profile_reducer';
+import { addPostAC, IProfile } from '../../../redux/profile_reducer';
 import { connect } from 'react-redux';
 import { MyPosts } from './MyPosts';
 import { AppRootStateType } from '../../../redux/redux-store';
@@ -8,8 +8,7 @@ interface IMapStateToProps {
   profileData: IProfile;
 }
 interface IMapDispatchToProps {
-  changeNewText: (text: string) => void;
-  addPost: () => void;
+  addPost: (data: { post: string }) => void;
 }
 
 const mapStateToProps = (state: AppRootStateType): IMapStateToProps => {
@@ -19,11 +18,8 @@ const mapStateToProps = (state: AppRootStateType): IMapStateToProps => {
 };
 const mapDispatchToProps = (dispatch: Dispatch): IMapDispatchToProps => {
   return {
-    changeNewText: (text: string) => {
-      dispatch(changeNewTextAC(text));
-    },
-    addPost: () => {
-      dispatch(addPostAC());
+    addPost: (data: { post: string }) => {
+      dispatch(addPostAC(data));
     },
   };
 };
