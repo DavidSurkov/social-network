@@ -3,6 +3,7 @@ import '../../App.css';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import { Friends } from './Friends';
+import { AuthoriseStateType } from '../../redux/authorise_reducer';
 
 //Styles
 export const SidebarStyle = styled.div`
@@ -28,15 +29,16 @@ export const SidebarStyle = styled.div`
 
 interface INavbar {
   sidebar: { friends: { id: number; name: string; image: string }[] };
+  authentication: AuthoriseStateType;
 }
 
 export function Sidebar(props: INavbar) {
   const friendsData = props.sidebar.friends.map((f) => <Friends key={f.id} id={f.id} name={f.name} image={f.image} />);
-
+  const userId = props.authentication.userId;
   return (
     <SidebarStyle>
       <div>
-        <NavLink to={'/profile/23373'}>Profile</NavLink>
+        <NavLink to={'/profile/' + userId}>Profile</NavLink>
       </div>
       <div>
         <NavLink to={'/dialogs'}>Dialogs</NavLink>

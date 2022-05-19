@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './App.css';
 import { AppStyle, Wrapper } from './components/styles/AppStyle';
 import { Route, Routes } from 'react-router-dom';
@@ -11,8 +11,33 @@ import UsersContainer from './components/Users/UsersContainer';
 import ProfileContainer from './components/Profile/ProfileContainer';
 import HeaderContainer from './components/Header/HeaderContainer';
 import Login from './components/Login/Login';
+import { useDispatch, useSelector } from 'react-redux';
+import { initialiseAuthDataTC } from './redux/authorise_reducer';
+import { Preloader } from './components/Common/Preloader';
+import { AppRootStateType } from './redux/redux-store';
+import styled from 'styled-components';
+const StyledContainer = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+`;
 
 function App() {
+  const dispatch = useDispatch();
+  const isInitialised = useSelector<AppRootStateType, boolean>((state) => state.app.isInitialised);
+  useEffect(() => {
+    dispatch(initialiseAuthDataTC());
+  }, []);
+
+  if (!isInitialised) {
+    return (
+      <StyledContainer>
+        <Preloader />
+      </StyledContainer>
+    );
+  }
   return (
     <AppStyle>
       <HeaderContainer />

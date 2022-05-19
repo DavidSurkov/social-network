@@ -2,7 +2,7 @@ import React from 'react';
 import '../../App.css';
 import headerLogo from '../../images/headerLogo.png';
 import styled from 'styled-components';
-import { Navigate, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 interface IHeader {
   userId: number | null;
