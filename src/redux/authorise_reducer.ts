@@ -1,5 +1,6 @@
 import { Dispatch } from 'redux';
 import { authAPI, FormData } from '../api/api';
+import { initialisedSuccessAC } from './app_reducer';
 
 export type AuthoriseStateType = {
   userId: number | null;
@@ -63,13 +64,14 @@ type AuthoriseReducerActionType =
   | ReturnType<typeof setError>
   | ReturnType<typeof logIn>;
 
-export const setLoginDataTC = () => {
+export const initialiseAuthDataTC = () => {
   return (dispatch: Dispatch) => {
-    authAPI.getLoginData().then((data) => {
+    return authAPI.authMe().then((data) => {
       if (data.resultCode === 0) {
         const { id, email, login } = data.data;
         dispatch(setUserData(id, email, login, true));
       }
+      dispatch(initialisedSuccessAC());
     });
   };
 };
@@ -83,11 +85,10 @@ export const logOutTC = () => {
   };
 };
 export const logInTC = (data: FormData) => {
-  return (dispatch: Dispatch) => {
+  return (dispatch: Dispatch<AuthoriseReducerActionType | any>) => {
     authAPI.logIn(data).then((response) => {
       if (response.data.resultCode === 0) {
-        // @ts-ignore
-        dispatch(setLoginDataTC());
+        dispatch(initialiseAuthDataTC());
       } else {
         dispatch(setError(response.data.messages[0]));
         setTimeout(() => {

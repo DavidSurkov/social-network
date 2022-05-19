@@ -12,7 +12,16 @@ export type FormData = {
   password: string;
   rememberMe: boolean;
 };
-
+export type APIResponseType<T = Record<string, never>> = {
+  resultCode: number;
+  messages: string[];
+  data: T;
+};
+type ResponseDataType = {
+  id: number;
+  email: string;
+  login: string;
+};
 export const usersAPI = {
   getUsers(currentPage: number, pageSize: number) {
     return instance.get(`users?page=${currentPage}&count=${pageSize}`).then((response) => {
@@ -44,18 +53,18 @@ export const profileAPI = {
   },
 };
 export const authAPI = {
-  getLoginData() {
-    return instance.get(`auth/me`).then((response) => {
+  authMe() {
+    return instance.get<APIResponseType<ResponseDataType>>(`auth/me`).then((response) => {
       return response.data;
     });
   },
   logIn(data: FormData) {
-    return instance.post(`auth/login`, data).then((response) => {
+    return instance.post<APIResponseType<{ userId: number }>>(`auth/login`, data).then((response) => {
       return response;
     });
   },
   logOut() {
-    return instance.delete(`auth/login`).then((response) => {
+    return instance.delete<APIResponseType>(`auth/login`).then((response) => {
       return response;
     });
   },

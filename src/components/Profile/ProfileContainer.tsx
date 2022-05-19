@@ -27,6 +27,7 @@ type MapDispatchToProps = {
 
 function ProfileContainer(props: PropsType) {
   const { userId } = useParams<string>();
+
   useEffect(() => {
     props.getUserProfileTC(userId);
     props.setProfileStatusTC(Number(userId));
