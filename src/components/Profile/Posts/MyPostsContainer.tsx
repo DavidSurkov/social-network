@@ -1,4 +1,4 @@
-import { addPostAC, IProfile } from '../../../redux/profile_reducer';
+import { addPostAC, deletePost, IProfile } from '../../../redux/profile_reducer';
 import { connect } from 'react-redux';
 import { MyPosts } from './MyPosts';
 import { AppRootStateType } from '../../../redux/redux-store';
@@ -9,6 +9,7 @@ interface IMapStateToProps {
 }
 interface IMapDispatchToProps {
   addPost: (data: { post: string }) => void;
+  deletePost: (id: number) => void;
 }
 
 const mapStateToProps = (state: AppRootStateType): IMapStateToProps => {
@@ -20,6 +21,9 @@ const mapDispatchToProps = (dispatch: Dispatch): IMapDispatchToProps => {
   return {
     addPost: (data: { post: string }) => {
       dispatch(addPostAC(data));
+    },
+    deletePost: (id: number) => {
+      dispatch(deletePost(id));
     },
   };
 };

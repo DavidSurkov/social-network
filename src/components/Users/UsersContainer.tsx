@@ -7,7 +7,7 @@ import {
   toggleFollowingProgress,
   unfollow,
   unfollowUserTC,
-  User,
+  IUser,
 } from '../../redux/users_reducer';
 import React, { ComponentType } from 'react';
 import { Users } from './Users';
@@ -24,7 +24,7 @@ import {
 } from '../../redux/users-selector';
 
 type mapStateToPropsType = {
-  users: Array<User>;
+  users: Array<IUser>;
   totalUsersCount: number;
   pageSize: number;
   currentPage: number;
@@ -32,9 +32,6 @@ type mapStateToPropsType = {
   followingProgress: number[];
 };
 type mapDispatchToPropsType = {
-  follow: (userID: number) => void;
-  unfollow: (userID: number) => void;
-  toggleFollowingProgress: (isFetching: boolean, userId: number) => void;
   getUsersTC: (currentPage: number, pageSize: number) => void;
   unfollowUserTC: (userId: number) => void;
   followUserTC: (userId: number) => void;
@@ -58,12 +55,9 @@ class UsersContainer extends React.Component<mapStateToPropsType & mapDispatchTo
             users={this.props.users}
             totalUsersCount={this.props.totalUsersCount}
             pageSize={this.props.pageSize}
-            follow={this.props.follow}
-            unfollow={this.props.unfollow}
             currentPage={this.props.currentPage}
             onPageChanged={this.onPageChanged}
             followingProgress={this.props.followingProgress}
-            toggleFollowingProgress={this.props.toggleFollowingProgress}
             followUserTC={this.props.followUserTC}
             unfollowUserTC={this.props.unfollowUserTC}
           />

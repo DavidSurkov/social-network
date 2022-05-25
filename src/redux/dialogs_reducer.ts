@@ -50,8 +50,8 @@ const initialState: IDialogs = {
 
 export const dialogsReducer = (state: IDialogs = initialState, action: DialogsActionType): IDialogs => {
   switch (action.type) {
-    case 'ADD-MESSAGE': {
-      const newMessage: IMessageSent = { id: Math.random() * 100, message: action.message.message };
+    case 'dialogs/ADD-MESSAGE': {
+      const newMessage: IMessageSent = { id: Math.random() * 100, message: action.messages.message };
       return {
         ...state,
         messages: {
@@ -64,5 +64,5 @@ export const dialogsReducer = (state: IDialogs = initialState, action: DialogsAc
       return state;
   }
 };
-export const addMessageAC = (message: { message: string }) => ({ type: 'ADD-MESSAGE', message } as const);
+export const addMessageAC = (messages: { message: string }) => ({ type: 'dialogs/ADD-MESSAGE', messages } as const);
 export type DialogsActionType = ReturnType<typeof addMessageAC>;

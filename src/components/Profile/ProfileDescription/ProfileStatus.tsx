@@ -1,11 +1,11 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 
 type ProfileStatusType = {
   status: string;
   updateProfileStatusTC: (status: string) => void;
 };
 
-export class ProfileStatus extends React.Component<ProfileStatusType> {
+/*export class ProfileStatus extends React.Component<ProfileStatusType> {
   state = {
     editMode: false,
     status: this.props.status,
@@ -50,4 +50,30 @@ export class ProfileStatus extends React.Component<ProfileStatusType> {
       </>
     );
   }
-}
+}*/
+export const ProfileStatus = (props: ProfileStatusType) => {
+  const [editMode, setEditMode] = useState<boolean>(false);
+  const [status, setStatus] = useState<string>(props.status);
+
+  useEffect(() => {
+    setStatus(props.status);
+  }, [props.status]);
+
+  const activateEditMode = () => {
+    setEditMode(true);
+  };
+  const deactivateEditMode = () => {
+    setEditMode(false);
+    props.updateProfileStatusTC(status);
+  };
+  const onStatusChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setStatus(e.currentTarget.value);
+  };
+
+  return (
+    <>
+      {!editMode && <span onDoubleClick={activateEditMode}>{status}</span>}
+      {editMode && <input onChange={onStatusChange} autoFocus={true} onBlur={deactivateEditMode} value={status} />}
+    </>
+  );
+};

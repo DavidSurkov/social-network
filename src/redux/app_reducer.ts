@@ -6,7 +6,7 @@ type ActionType = ReturnType<typeof initialisedSuccessAC>;
 
 export const appReducer = (state: InitialStateType = initialState, action: ActionType): InitialStateType => {
   switch (action.type) {
-    case 'INITIALISED-SUCCESS':
+    case 'app/INITIALISED-SUCCESS':
       return { ...state, isInitialised: true };
 
     default:
@@ -16,7 +16,7 @@ export const appReducer = (state: InitialStateType = initialState, action: Actio
 
 export const initialisedSuccessAC = () =>
   ({
-    type: 'INITIALISED-SUCCESS',
+    type: 'app/INITIALISED-SUCCESS',
   } as const);
 /*
 export const initialiseAppTC = () => (dispatch: Dispatch<any>) => {
