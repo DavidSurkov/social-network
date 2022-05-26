@@ -54,7 +54,7 @@ type LoginFormType = {
   logInTC: (data: FormData) => void;
   serverError: string | null;
 };
-const LoginForm = (props: LoginFormType) => {
+const LoginForm: React.FC<LoginFormType> = ({ logInTC, serverError }) => {
   const authentication = useSelector<AppRootStateType, AuthoriseStateType>((state) => state.authentication);
   const {
     register,
@@ -63,7 +63,7 @@ const LoginForm = (props: LoginFormType) => {
     formState: { errors },
   } = useForm<FormData>();
   const onSubmit = (data: FormData) => {
-    props.logInTC(data);
+    logInTC(data);
     reset();
   };
   if (authentication.isLogged) {
@@ -83,7 +83,7 @@ const LoginForm = (props: LoginFormType) => {
         <label>Remember Me</label>
         <input {...register('rememberMe')} type={'checkbox'} />
       </div>
-      {props.serverError && <ErrorDiv>{props.serverError}</ErrorDiv>}
+      {serverError && <ErrorDiv>{serverError}</ErrorDiv>}
       <button>Submit</button>
     </form>
   );

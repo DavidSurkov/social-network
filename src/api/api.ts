@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { IUser } from '../redux/users_reducer';
 
 const instance = axios.create({
   withCredentials: true,
@@ -17,33 +18,34 @@ export type APIResponseType<T = Record<string, never>> = {
   messages: string[];
   data: T;
 };
-type ResponseDataType = {
+type AuthResponseType = {
   id: number;
   email: string;
   login: string;
 };
+type GetUsersResponseType = {
+  items: IUser[];
+  totalCount: number;
+  error: string | null;
+};
 export const usersAPI = {
-  getUsers(currentPage: number, pageSize: number) {
-    return instance.get(`users?page=${currentPage}&count=${pageSize}`).then((response) => {
-      return response.data;
-    });
+  async getUsers(currentPage: number, pageSize: number) {
+    const response = await instance.get<GetUsersResponseType>(`users?page=${currentPage}&count=${pageSize}`);
+    return response.data;
   },
-  unfollowUser(userId: number) {
-    return instance.delete(`follow/${userId}`).then((response) => {
-      return response.data;
-    });
+  async unfollowUser(userId: number) {
+    const response = await instance.delete<APIResponseType>(`follow/${userId}`);
+    return response.data;
   },
-  followUser(userId: number) {
-    return instance.post(`follow/${userId}`).then((response) => {
-      return response.data;
-    });
+  async followUser(userId: number) {
+    const response = await instance.post<APIResponseType>(`follow/${userId}`);
+    return response.data;
   },
 };
 export const profileAPI = {
-  getProfileData(userId: number | string | undefined) {
-    return instance.get(`profile/${userId}`).then((response) => {
-      return response.data;
-    });
+  async getProfileData(userId: number | string | undefined) {
+    const response = await instance.get(`profile/${userId}`);
+    return response.data;
   },
   getProfileStatus(userId: number) {
     return instance.get(`profile/status/${userId}`);
@@ -53,19 +55,14 @@ export const profileAPI = {
   },
 };
 export const authAPI = {
-  authMe() {
-    return instance.get<APIResponseType<ResponseDataType>>(`auth/me`).then((response) => {
-      return response.data;
-    });
+  async authMe() {
+    return await instance.get<APIResponseType<AuthResponseType>>(`auth/me`);
   },
-  logIn(data: FormData) {
-    return instance.post<APIResponseType<{ userId: number }>>(`auth/login`, data).then((response) => {
-      return response;
-    });
+  async logIn(data: FormData) {
+    return await instance.post<APIResponseType<{ userId: number }>>(`auth/login`, data);
   },
-  logOut() {
-    return instance.delete<APIResponseType>(`auth/login`).then((response) => {
-      return response;
-    });
+  async logOut() {
+    return await instance.delete<APIResponseType>(`auth/login`);
   },
 };
+type ApiMethodsType = { unfollowUser(userId: number): void };

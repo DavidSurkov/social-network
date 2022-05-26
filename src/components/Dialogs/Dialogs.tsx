@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { Dialog } from './Dialog/Dialog';
 import { MessageReceived } from './Message/MessageReceived';
@@ -33,7 +33,7 @@ const ErrorText = styled.div`
 
 interface IDialog {
   dialogsData: IDialogs;
-  addMessage: (message: { message: string }) => void;
+  addMessage: (messages: { message: string }) => void;
 }
 type FormType = {
   message: string;

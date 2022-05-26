@@ -25,13 +25,14 @@ const ErrorText = styled.div`
 interface IPost {
   profileData: IProfile;
   addPost: (data: { post: string }) => void;
+  deletePost: (id: number) => void;
 }
 type FormType = {
   post: string;
 };
-export const MyPosts = (props: IPost) => {
+export const MyPosts = React.memo((props: IPost) => {
   const postsElements = props.profileData.posts.map((p) => (
-    <Post key={p.id} id={p.id} message={p.text} likes={p.likeCounter} />
+    <Post key={p.id} id={p.id} message={p.text} likes={p.likeCounter} deletePost={props.deletePost} />
   ));
   const {
     register,
@@ -57,4 +58,4 @@ export const MyPosts = (props: IPost) => {
       {postsElements}
     </>
   );
-};
+});

@@ -10,7 +10,7 @@ interface IMapStateToProps {
   isLogged: boolean;
 }
 interface IMapDispatchToProps {
-  addMessage: (message: { message: string }) => void;
+  addMessage: (messages: { message: string }) => void;
 }
 
 const mapStateToProps = (state: AppRootStateType): IMapStateToProps => {
@@ -21,8 +21,8 @@ const mapStateToProps = (state: AppRootStateType): IMapStateToProps => {
 };
 const mapDispatchToProps = (dispatch: Dispatch): IMapDispatchToProps => {
   return {
-    addMessage: (message) => {
-      dispatch(addMessageAC(message));
+    addMessage: (messages) => {
+      dispatch(addMessageAC(messages));
     },
   };
 };
