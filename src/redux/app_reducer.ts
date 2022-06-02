@@ -2,9 +2,9 @@ const initialState = {
   isInitialised: false,
 };
 type InitialStateType = typeof initialState;
-type ActionType = ReturnType<typeof initialisedSuccessAC>;
+export type AppActionType = ReturnType<typeof initialisedSuccessAC>;
 
-export const appReducer = (state: InitialStateType = initialState, action: ActionType): InitialStateType => {
+export const appReducer = (state: InitialStateType = initialState, action: AppActionType): InitialStateType => {
   switch (action.type) {
     case 'app/INITIALISED-SUCCESS':
       return { ...state, isInitialised: true };

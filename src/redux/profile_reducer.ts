@@ -1,5 +1,8 @@
 import { Dispatch } from 'redux';
-import { profileAPI } from '../api/api';
+import { PhotoResponseType, profileAPI, SaveProfileRequestType } from '../api/api';
+import { AppThunk } from './redux-store';
+import { IContactsForm } from '../components/Profile/ProfileDescription/Contacts';
+import { IAboutMeForm } from '../components/Profile/ProfileDescription/AboutMeDescription';
 
 const initialState: IProfile = {
   posts: [
@@ -17,7 +20,6 @@ export interface IPosts {
   likeCounter: number;
 }
 export interface IUserProfile {
-  aboutMe: string | null;
   contacts: {
     facebook: string | null;
     website: string | null;
@@ -42,6 +44,11 @@ export interface IProfile {
   profile: IUserProfile;
   status: string;
 }
+
+export enum ProfileFormEnum {
+  CONTACTS = 'CONTACTS',
+  DESCRIPTION = 'DESCRIPTION',
+}
 export const profileReducer = (state: IProfile = initialState, action: ProfileActionType): IProfile => {
   switch (action.type) {
     case 'ADD-POST': {
@@ -57,6 +64,10 @@ export const profileReducer = (state: IProfile = initialState, action: ProfileAc
     case 'DELETE-POST': {
       return { ...state, posts: [...state.posts.filter((p) => p.id != action.id)] };
     }
+    case 'SET-NEW-PHOTOS': {
+      debugger;
+      return { ...state, profile: { ...state.profile, photos: action.photos } };
+    }
     default:
       return state;
   }
@@ -65,14 +76,16 @@ export const addPostAC = (data: { post: string }) => ({ type: 'ADD-POST', data }
 export const setUserProfile = (profile: IUserProfile) => ({ type: 'SET-USER-PROFILE', profile } as const);
 export const setStatus = (status: string) => ({ type: 'SET-STATUS', status } as const);
 export const deletePost = (id: number) => ({ type: 'DELETE-POST', id } as const);
+export const setNewPhotos = (photos: PhotoResponseType) => ({ type: 'SET-NEW-PHOTOS', photos } as const);
 
 export type ProfileActionType =
   | ReturnType<typeof addPostAC>
   | ReturnType<typeof setUserProfile>
   | ReturnType<typeof setStatus>
-  | ReturnType<typeof deletePost>;
+  | ReturnType<typeof deletePost>
+  | ReturnType<typeof setNewPhotos>;
 
-export const getUserProfileTC = (userId: number | string | undefined) => {
+export const getUserProfileTC = (userId: number) => {
   return (dispatch: Dispatch) => {
     profileAPI.getProfileData(userId).then((data) => {
       dispatch(setUserProfile(data));
@@ -97,3 +110,54 @@ export const updateProfileStatusTC = (status: string) => {
     });
   };
 };
+export const updateProfilePhotoTC =
+  (photo: Blob | string): AppThunk =>
+  async (dispatch, getState) => {
+    try {
+      const response = await profileAPI.updatePhoto(photo);
+      const userId = getState().authentication.userId;
+      if (response.data.resultCode === 0) {
+        dispatch(getUserProfileTC(userId as number));
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+export const saveProfileTC =
+  (profileData: IContactsForm | IAboutMeForm, updateFlag: ProfileFormEnum): AppThunk =>
+  async (dispatch, getState) => {
+    const userId = Number(getState().authentication.userId);
+    const profile = getState().profileData.profile;
+    let profileObj = {} as SaveProfileRequestType;
+    if (updateFlag === ProfileFormEnum.CONTACTS) {
+      if ('instagram' in profileData) {
+        profileObj = {
+          fullName: profile.fullName,
+          aboutMe: 'ho',
+          userId: userId,
+          lookingForAJob: profile.lookingForAJob,
+          lookingForAJobDescription: profile.lookingForAJobDescription,
+          contacts: profileData,
+        };
+      }
+    } else if (updateFlag === ProfileFormEnum.DESCRIPTION) {
+      if ('lookingForAJob' in profileData && 'fullName' in profileData && 'lookingForAJobDescription' in profileData) {
+        profileObj = {
+          contacts: profile.contacts,
+          userId: userId,
+          aboutMe: 'ho',
+          lookingForAJob: profileData.lookingForAJob,
+          lookingForAJobDescription: profileData.lookingForAJobDescription,
+          fullName: profileData.fullName,
+        };
+      }
+    }
+    try {
+      const response = await profileAPI.saveProfile(profileObj);
+      if (response.data.resultCode === 0) {
+        dispatch(getUserProfileTC(userId));
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };

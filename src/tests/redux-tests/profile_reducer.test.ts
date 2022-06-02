@@ -19,7 +19,6 @@ const state: IProfile = {
 };
 const newPost = 'Good afternoon';
 const userProfile: IUserProfile = {
-  aboutMe: 'I am a dog',
   contacts: {
     facebook: null,
     website: 'google.com',

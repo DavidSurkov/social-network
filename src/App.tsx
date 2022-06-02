@@ -1,7 +1,7 @@
 import React, { lazy, useEffect } from 'react';
 import './App.css';
 import { AppStyle, Wrapper } from './components/styles/AppStyle';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, Navigate } from 'react-router-dom';
 import { Feed } from './components/Feed/Feed';
 import { Music } from './components/Music/Music';
 import { Settings } from './components/Settings/Settings';
@@ -47,6 +47,7 @@ function App() {
       <Wrapper>
         <React.Suspense fallback={<div>Loading...</div>}>
           <Routes>
+            <Route path="/" element={<Navigate to={'/login'} />} />
             <Route path="/dialogs/*" element={<DialogsContainer />} />
             <Route path="/profile/:userId" element={<ProfileContainer />} />
             <Route path="/feed/*" element={<Feed />} />
