@@ -1,8 +1,22 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
+import styled from 'styled-components';
+
+//Styles
+const StatusStyle = styled.div`
+  display: flex;
+  margin: 0 10px;
+  flex-direction: column;
+  min-width: 250px;
+`;
+const StyledInput = styled.input`
+  width: 240px;
+`;
+const StyledSpan = styled.span``;
 
 type ProfileStatusType = {
   status: string;
   updateProfileStatusTC: (status: string) => void;
+  isOwner: boolean;
 };
 
 /*export class ProfileStatus extends React.Component<ProfileStatusType> {
@@ -60,7 +74,7 @@ export const ProfileStatus = (props: ProfileStatusType) => {
   }, [props.status]);
 
   const activateEditMode = () => {
-    setEditMode(true);
+    props.isOwner && setEditMode(true);
   };
   const deactivateEditMode = () => {
     setEditMode(false);
@@ -71,9 +85,12 @@ export const ProfileStatus = (props: ProfileStatusType) => {
   };
 
   return (
-    <>
-      {!editMode && <span onDoubleClick={activateEditMode}>{status}</span>}
-      {editMode && <input onChange={onStatusChange} autoFocus={true} onBlur={deactivateEditMode} value={status} />}
-    </>
+    <StatusStyle>
+      <span>Status:</span>
+      {!editMode && <StyledSpan onDoubleClick={activateEditMode}>{status}</StyledSpan>}
+      {editMode && (
+        <StyledInput onChange={onStatusChange} autoFocus={true} onBlur={deactivateEditMode} value={status} />
+      )}
+    </StatusStyle>
   );
 };

@@ -67,7 +67,7 @@ const LoginForm: React.FC<LoginFormType> = ({ logInTC, serverError }) => {
     reset();
   };
   if (authentication.isLogged) {
-    return <Navigate to="/dialogs/" />;
+    return <Navigate to={'/profile/' + authentication.userId} />;
   }
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

@@ -28,6 +28,27 @@ type GetUsersResponseType = {
   totalCount: number;
   error: string | null;
 };
+export type PhotoResponseType = {
+  small: string;
+  large: string;
+};
+export type SaveProfileRequestType = {
+  contacts: {
+    facebook: string | null;
+    website: string | null;
+    vk: string | null;
+    twitter: string | null;
+    instagram: string | null;
+    youtube: string | null;
+    github: string | null;
+    mainLink: string | null;
+  };
+  lookingForAJob: boolean;
+  lookingForAJobDescription: string | null;
+  aboutMe: string | null;
+  fullName: string | null;
+  userId: number;
+};
 export const usersAPI = {
   async getUsers(currentPage: number, pageSize: number) {
     const response = await instance.get<GetUsersResponseType>(`users?page=${currentPage}&count=${pageSize}`);
@@ -43,7 +64,7 @@ export const usersAPI = {
   },
 };
 export const profileAPI = {
-  async getProfileData(userId: number | string | undefined) {
+  async getProfileData(userId: number) {
     const response = await instance.get(`profile/${userId}`);
     return response.data;
   },
@@ -52,6 +73,20 @@ export const profileAPI = {
   },
   updateProfileStatus(status: string) {
     return instance.put('profile/status', { status });
+  },
+  updatePhoto(photo: Blob | string) {
+    debugger;
+    const formData = new FormData();
+    formData.append('image', photo);
+    return instance.put<APIResponseType<PhotoResponseType>>('/profile/photo', formData, {
+      headers: {
+        'Content-type': 'multipart/form-data',
+      },
+    });
+  },
+  saveProfile(profile: SaveProfileRequestType) {
+    debugger;
+    return instance.put<APIResponseType>('/profile', profile);
   },
 };
 export const authAPI = {
@@ -65,4 +100,3 @@ export const authAPI = {
     return await instance.delete<APIResponseType>(`auth/login`);
   },
 };
-type ApiMethodsType = { unfollowUser(userId: number): void };

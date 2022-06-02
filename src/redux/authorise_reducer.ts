@@ -52,7 +52,7 @@ export const logOut = () => ({ type: 'authorise/LOG-OUT' } as const);
 export const logIn = () => ({ type: 'authorise/LOG-IN' } as const);
 export const setError = (message: string | null) => ({ type: 'authorise/SET-ERROR', message } as const);
 
-type AuthoriseReducerActionType =
+export type AuthoriseReducerActionType =
   | ReturnType<typeof setUserData>
   | ReturnType<typeof logOut>
   | ReturnType<typeof setError>
