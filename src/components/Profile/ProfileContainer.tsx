@@ -36,6 +36,7 @@ const mapStateToProps = (state: AppRootStateType): IProfile & AuthoriseStateType
     email: state.authentication.email,
     error: state.authentication.error,
     isLogged: state.authentication.isLogged,
+    captcha: state.authentication.captcha,
   };
 };
 type MapDispatchToProps = {

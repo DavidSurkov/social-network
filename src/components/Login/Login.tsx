@@ -5,18 +5,7 @@ import { AuthoriseStateType, logInTC } from '../../redux/authorise_reducer';
 import { AppRootStateType } from '../../redux/redux-store';
 import styled from 'styled-components';
 import { Navigate } from 'react-router-dom';
-type MapStateToPropsType = {
-  userId: number | null;
-  email: string | null;
-  login: string | null;
-  isLogged: boolean;
-  error: string | null;
-};
-type MapDispatchToPropsType = {
-  logInTC: (data: FormData) => void;
-};
-type LoginType = MapStateToPropsType & MapDispatchToPropsType;
-
+//Styles
 const ErrorSpan = styled.span`
   color: red;
   margin-left: 5px;
@@ -25,13 +14,31 @@ const ErrorDiv = styled.div`
   color: red;
   font-weight: 700;
 `;
+const LoginContainer = styled.div`
+  align-self: start;
+  display: flex;
+  flex-direction: column;
+`;
+//Types
+type MapStateToPropsType = {
+  userId: number | null;
+  email: string | null;
+  login: string | null;
+  isLogged: boolean;
+  error: string | null;
+  captcha?: string;
+};
+type MapDispatchToPropsType = {
+  logInTC: (data: FormData) => void;
+};
+type LoginType = MapStateToPropsType & MapDispatchToPropsType;
 
 const Login = (props: LoginType) => {
   return (
-    <div>
+    <LoginContainer>
       <h1>Login</h1>
-      <LoginForm serverError={props.error} logInTC={props.logInTC} />
-    </div>
+      <LoginForm captcha={props.captcha} serverError={props.error} logInTC={props.logInTC} />
+    </LoginContainer>
   );
 };
 const mapStateToProps = (state: AppRootStateType): AuthoriseStateType => {
@@ -41,20 +48,27 @@ const mapStateToProps = (state: AppRootStateType): AuthoriseStateType => {
     login: state.authentication.login,
     isLogged: state.authentication.isLogged,
     error: state.authentication.error,
+    captcha: state.authentication.captcha,
   };
 };
 export default connect(mapStateToProps, { logInTC })(Login);
-
+//Types
 type FormData = {
   email: string;
   password: string;
   rememberMe: boolean;
+  captcha?: string;
 };
 type LoginFormType = {
   logInTC: (data: FormData) => void;
   serverError: string | null;
+  captcha?: string;
 };
-const LoginForm: React.FC<LoginFormType> = ({ logInTC, serverError }) => {
+const StyledForm = styled.form`
+  display: flex;
+  flex-direction: column;
+`;
+const LoginForm: React.FC<LoginFormType> = ({ logInTC, serverError, captcha }) => {
   const authentication = useSelector<AppRootStateType, AuthoriseStateType>((state) => state.authentication);
   const {
     register,
@@ -70,21 +84,23 @@ const LoginForm: React.FC<LoginFormType> = ({ logInTC, serverError }) => {
     return <Navigate to={'/profile/' + authentication.userId} />;
   }
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <StyledForm onSubmit={handleSubmit(onSubmit)}>
       <div>
         <input placeholder={'Email'} {...register('email', { required: true })} />
         {errors.email && <ErrorSpan>Field is required</ErrorSpan>}
       </div>
       <div>
-        <input placeholder={'Password'} {...register('password', { required: true })} />
+        <input type={'password'} placeholder={'Password'} {...register('password', { required: true })} />
         {errors.password && <ErrorSpan>Field is required</ErrorSpan>}
       </div>
       <div>
         <label>Remember Me</label>
         <input {...register('rememberMe')} type={'checkbox'} />
       </div>
+      {captcha && <img src={captcha} alt={''} />}
+      {captcha && <input {...register('captcha')} />}
       {serverError && <ErrorDiv>{serverError}</ErrorDiv>}
       <button>Submit</button>
-    </form>
+    </StyledForm>
   );
 };
