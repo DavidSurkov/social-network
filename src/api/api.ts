@@ -12,6 +12,7 @@ export type FormData = {
   email: string;
   password: string;
   rememberMe: boolean;
+  captcha?: string;
 };
 export type APIResponseType<T = Record<string, never>> = {
   resultCode: number;
@@ -98,5 +99,10 @@ export const authAPI = {
   },
   async logOut() {
     return await instance.delete<APIResponseType>(`auth/login`);
+  },
+};
+export const securityAPI = {
+  async getCaptcha() {
+    return await instance.get<{ url: string }>(`security/get-captcha-url`);
   },
 };

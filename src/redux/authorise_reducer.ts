@@ -1,5 +1,5 @@
 import { Dispatch } from 'redux';
-import { authAPI, FormData } from '../api/api';
+import { authAPI, FormData, securityAPI } from '../api/api';
 import { initialisedSuccessAC } from './app_reducer';
 
 export type AuthoriseStateType = {
@@ -8,6 +8,7 @@ export type AuthoriseStateType = {
   login: string | null;
   isLogged: boolean;
   error: string | null;
+  captcha: string;
 };
 const initialState = {} as AuthoriseStateType;
 
@@ -42,6 +43,12 @@ export const authoriseReducer = (
         error: action.message,
       };
     }
+    case 'authorise/SET-CAPTCHA': {
+      return {
+        ...state,
+        captcha: action.captcha,
+      };
+    }
     default:
       return state;
   }
@@ -51,12 +58,14 @@ export const setUserData = (userId: number | null, email: string | null, login: 
 export const logOut = () => ({ type: 'authorise/LOG-OUT' } as const);
 export const logIn = () => ({ type: 'authorise/LOG-IN' } as const);
 export const setError = (message: string | null) => ({ type: 'authorise/SET-ERROR', message } as const);
+export const setCaptcha = (captcha: string) => ({ type: 'authorise/SET-CAPTCHA', captcha } as const);
 
 export type AuthoriseReducerActionType =
   | ReturnType<typeof setUserData>
   | ReturnType<typeof logOut>
   | ReturnType<typeof setError>
-  | ReturnType<typeof logIn>;
+  | ReturnType<typeof logIn>
+  | ReturnType<typeof setCaptcha>;
 
 export const initialiseAuthDataTC = () => async (dispatch: Dispatch) => {
   const response = await authAPI.authMe();
@@ -78,10 +87,22 @@ export const logInTC = (data: FormData) => async (dispatch: Dispatch<AuthoriseRe
   const response = await authAPI.logIn(data);
   if (response.data.resultCode === 0) {
     dispatch(initialiseAuthDataTC());
+    dispatch(setCaptcha(''));
   } else {
+    if (response.data.resultCode === 10) {
+      dispatch(getCaptchaTC());
+    }
     dispatch(setError(response.data.messages[0]));
     setTimeout(() => {
       dispatch(setError(null));
     }, 2000);
+  }
+};
+export const getCaptchaTC = () => async (dispatch: Dispatch<AuthoriseReducerActionType> | any) => {
+  try {
+    const { data } = await securityAPI.getCaptcha();
+    dispatch(setCaptcha(data.url));
+  } catch (e) {
+    console.log(e);
   }
 };

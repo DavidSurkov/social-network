@@ -1,6 +1,5 @@
 import React, { lazy, useEffect } from 'react';
 import './App.css';
-import { AppStyle, Wrapper } from './components/styles/AppStyle';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import { Feed } from './components/Feed/Feed';
 import { Music } from './components/Music/Music';
@@ -22,6 +21,34 @@ const StyledContainer = styled.div`
   display: flex;
   width: 100%;
   height: 100vh;
+  justify-content: center;
+  align-items: center;
+`;
+export const AppStyle = styled.div`
+  color: white;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-areas:
+    'h h'
+    'n c';
+  grid-template-rows: 60px 1fr;
+  grid-auto-columns: 2fr 10fr;
+  font-family: 'Helvetica Neue';
+  button {
+    height: fit-content;
+    width: content-box;
+    color: wheat;
+    background: #014d55;
+  }
+`;
+
+export const Wrapper = styled.div`
+  grid-area: c;
+  background-color: #191f26;
+  padding: 10px;
+  border: 1px dashed #014d55;
+  display: flex;
   justify-content: center;
   align-items: center;
 `;

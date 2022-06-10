@@ -23,6 +23,7 @@ const mapStateToProps = (state: AppRootStateType): AuthoriseStateType => {
     login: state.authentication.login,
     isLogged: state.authentication.isLogged,
     error: state.authentication.error,
+    captcha: state.authentication.captcha,
   };
 };
 export default connect(mapStateToProps, { logOutTC })(HeaderContainer);
